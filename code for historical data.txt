@@ -1,0 +1,18 @@
+dates_i = ['2019-01-01','2019-07-01','2020-01-01','2020-07-01','2021-01-01','2021-07-01','2022-01-01','2022-07-01','2023-01-01']
+dates_f = ['2019-06-30','2019-12-31','2020-06-30','2020-12-31','2021-06-30','2021-12-31','2022-06-30','2022-12-31','2023-06-30']
+i,f = 0,0
+while i<len(dates_i) and f< len(dates_f):
+    df = client.historical_data('N','C',999920000,'1m',dates_i[i],dates_f[f])
+    df.to_csv(dates_i[i] + '.csv', index = False)
+    i+=1
+    f+=1
+
+dff= pd.read_csv(dates_i[0]+'.csv')
+df= dff.copy()
+    
+for i in range(1,len(dates_i)):
+    dff= pd.read_csv(dates_i[i]+'.csv')
+    if i>0:
+        df = pd.concat([df, dff])
+        
+df.to_csv('NIFTY-2019-2023.csv',index = False)
